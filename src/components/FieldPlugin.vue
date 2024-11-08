@@ -1,33 +1,58 @@
 <script setup lang="ts">
 import { useFieldPlugin } from '@storyblok/field-plugin/vue3'
+import Swatch from './Swatch.vue'
+import { ref, watch } from 'vue'
 
-const plugin = useFieldPlugin({
-  enablePortalModal: true,
-  /*
-    The `validateContent` parameter is optional. It allows you to
-      - validate the content
-      - make changes before sending it to the Storyblok Visual Editor
-      - provide type-safety
+const plugin = useFieldPlugin()
 
-    // For example,
-    validateContent: (content: unknown) => {
-      if (typeof content === 'string') {
-        return {
-          content,
-        }
-      } else {
-        return {
-          content,
-          error: `content is expected to be a string (actual value: ${JSON.stringify(content)})`,
-        }
-      }
-    }
-  */
+const defaultColours = [
+  { value: '#fff', name: 'white' },
+  { value: '#000', name: 'black' }
+]
+
+const parseSwatches = (swatches: string) => {
+  try {
+    return JSON.parse(swatches)
+  } catch (e) {
+    console.error('Failed to parse swatches:', e)
+    return defaultColours
+  }
+}
+
+const colours = ref(defaultColours)
+
+watch(() => plugin.data?.options.swatches, (newSwatches) => {
+  if (newSwatches) {
+    colours.value = parseSwatches(newSwatches)
+  }
 })
+
+const selectedColour = ref(colours.value[0])
+
+const handleSave = (colour: { value: string; name: string; }) => {
+  selectedColour.value = colour
+  plugin.actions?.setContent(colour)
+}
 </script>
 
 <template>
-  <pre>
-    {{ JSON.stringify(plugin, null, 2) }}
-  </pre>
+  <div class="palette">
+    <swatch
+      v-for="colour in colours"
+      :key="colour.value"
+      :colour="colour"
+      :selected="selectedColour"
+      @click="handleSave(colour)"
+    />
+  </div>
 </template>
+
+<style scoped lang="postcss">
+.palette {
+  display: grid;
+
+  gap: 12px;
+
+  grid-template-columns: repeat(auto-fit, 38px);
+}
+</style>

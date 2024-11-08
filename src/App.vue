@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import _FieldPlugin from './components/FieldPlugin.vue'
-import FieldPluginExample from './components/FieldPluginExample/index.vue'
+import FieldPlugin from './components/FieldPlugin.vue'
 </script>
 
 <template>
-  <FieldPluginExample />
+  <FieldPlugin />
 </template>
