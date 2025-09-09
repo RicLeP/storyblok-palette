@@ -12,7 +12,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="swatch" :style="{ backgroundColor: props.colour.value }">
+  <div class="swatch" :style="{ background: props.colour.value }">
     <svg
       v-if="props.colour.value === props.selected.value"
       role="presentation"
