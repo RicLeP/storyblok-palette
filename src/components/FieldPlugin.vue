@@ -7,8 +7,7 @@ const plugin = useFieldPlugin()
 
 const defaultColours = [
   { value: '#fff', name: 'white' },
-  { value: '#000', name: 'black' },
-  // { value: 'linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%)', name: 'gradient' }
+  { value: '#000', name: 'black' }
 ]
 
 const parseSwatches = (swatches: string) => {
